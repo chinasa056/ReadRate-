@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Books', {
+    await queryInterface.createTable('books', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
@@ -20,7 +20,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      publishedDate: {
+      published_date: {
         type: Sequelize.DATE,
         allowNull: false,
       },
@@ -28,13 +28,23 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: true,
       },
-      averageRating: {
+      average_rating: {
         type: Sequelize.FLOAT,
         defaultValue: 0,
+      },
+       created_at: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.NOW,
+      },
+      updated_at: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.NOW,
       }
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Books');
+    await queryInterface.dropTable('books');
   },
 };

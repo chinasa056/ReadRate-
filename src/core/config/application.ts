@@ -6,5 +6,6 @@ export const setting = {
     secret: process.env.JWT_SECRET as string
   },
   port: process.env.APP_PORT as string,
-  secretKey: process.env.ACCESS_TOKEN as string,
+  secretKey: process.env.JWT_SECRET as string,
+
 };

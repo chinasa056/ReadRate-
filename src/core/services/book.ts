@@ -7,11 +7,6 @@ export const createBook = async (bookData: IBook): Promise<Book> => {
   return await Book.create(bookData);
 };
 
-// export const getAllBooks = async (): Promise<Book[]> => {
-//   return await Book.findAll({ order: [['createdAt', 'DESC']] });
-// };
-
-// src/core/services/book.ts
 interface GetAllBooksOptions {
   page: number;
   limit: number;
@@ -36,9 +31,9 @@ export const getAllBooks = async ({
   if (author) whereClause.author = { [Op.like]: `%${author}%` };
   if (genre) whereClause.genre = { [Op.like]: `%${genre}%` };
 
-  let order: any = [['createdAt', 'DESC']]; // Default sort: newest
+  let order: any = [['created_at', 'DESC']]; // Default sort: newest
   if (sortBy === 'highestRated') order = [['averageRating', 'DESC']];
-  else if (sortBy === 'oldest') order = [['createdAt', 'ASC']];
+  else if (sortBy === 'oldest') order = [['created_at', 'ASC']];
 
   const { rows: books, count } = await Book.findAndCountAll({
     where: whereClause,

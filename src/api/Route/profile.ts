@@ -5,6 +5,6 @@ import { authenticate } from '../middleware/authenticate';
 const router = Router();
 
 router.patch('/edit', authenticate, RequestHandler.updateUser);
-router.get('/:username', authenticate, RequestHandler.userProfile);
+router.get('/:user_name', authenticate, RequestHandler.userProfile);
 
 export { router as profileRoutes };

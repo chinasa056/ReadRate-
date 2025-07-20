@@ -3,12 +3,13 @@ import jwt, { TokenExpiredError } from "jsonwebtoken";
 import { CustomError } from "../../core/errors/CustomError";
 import { ErrorCode } from "../../core/enum/error";
 import { HttpStatus } from "../../core/enum/httpCode";
-import { User } from "../../core/models";
+// import { User } from "../../core/models";
 import { setting } from "../../core/config/application";
+import { findUserById } from "../../core/services/user";
 
 export interface AuthenticatedUser {
   userId: string;
-  username: string;
+  user_name: string;
   isAdmin: boolean;
 }
 
@@ -46,7 +47,7 @@ export const authenticate = async (
 
     const { user } = jwt.verify(token, setting.jwt.secret) as JwtPayload;
 
-    const authUser = await User.findByPk(user.userId);
+    const authUser = await findUserById(user.userId);
 
     if (!authUser) {
       throw new CustomError(
@@ -58,7 +59,7 @@ export const authenticate = async (
 
     req.user = {
       userId: authUser.id,
-      username: authUser.username,
+      user_name: authUser.user_name,
       isAdmin: authUser.is_admin,
     };
 

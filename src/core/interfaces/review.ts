@@ -1,13 +1,13 @@
 export interface IReviewAttributes {
   id?: string;
-  userId: string;
-  userName: string;
-  bookId: string;
-  bookName: string;
+  user_id: string;
+  user_name: string;
+  book_id: string;
+  book_name: string;
   rating: number;
   comment: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  created_at?: Date;
+  updated_at?: Date;
 }
 
 export interface ICreateReviewResponse {
@@ -15,10 +15,10 @@ export interface ICreateReviewResponse {
   message: string;
   data: {
     id: string;
-    bookId: string;
-    bookName: string;
-    userId: string;
-    userName: string;
+     book_id: string;
+    book_name: string;
+    user_id: string;
+    user_name: string;
     rating: number;
     comment: string;
   };

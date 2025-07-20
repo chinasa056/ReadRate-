@@ -1,6 +1,6 @@
 export interface UserAttributes {
   id?: string;
-  username: string;
+  user_name: string;
   email: string;
   password: string;
   is_verified: boolean;
@@ -10,7 +10,7 @@ export interface UserAttributes {
 
 
 export interface UserRegistrationRequest {
-  username: string;
+  user_name: string;
   email: string;
   password: string;
 }
@@ -31,7 +31,7 @@ export interface UserLoginResponse {
 }
 
 export interface GetUserProfileData {
-  username: string;
+  user_name: string;
 }
 
 export interface ProfileResponse {

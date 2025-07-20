@@ -6,17 +6,17 @@ import { CustomError } from '../errors/CustomError';
 import { ErrorCode } from '../enum/error';
 import { HttpStatus } from '../enum/httpCode';
 
-export const createNewBook = async (userId: string, bookData: IBook) => {
-  const user = await findUserById(userId)
+export const createNewBook = async (user_id: string, bookData: IBook) => {
+  const user = await findUserById(user_id)
    if (!user) {
     throw new CustomError(
-      "Manager not found",
+      "user not found",
       ErrorCode.NOT_FOUND,
       HttpStatus.NOT_FOUND
     );
   };
 
-    if (!bookData.title || !bookData.author || !bookData.genre || !bookData.publishedDate) {
+    if (!bookData.title || !bookData.author || !bookData.genre || !bookData.published_date) {
         throw new Error('Missing required book fields');
     };
   return await bookService.createBook(bookData);

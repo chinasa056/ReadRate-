@@ -4,36 +4,36 @@ import { ICreateReviewResponse, IReviewAttributes } from '../interfaces/review';
 import { findUserById } from '../services/user';
 
 export const createOrUpdateReview = async (
-  userId: string,
-  bookId: string,
+  user_id: string,
+   book_id: string,
   body: IReviewAttributes
 ): Promise<ICreateReviewResponse> => {
-  const user = await findUserById(userId);
+  const user = await findUserById(user_id);
   if (!user) throw new Error('User not found');
 
-  const book = await getBookById(bookId);
+  const book = await getBookById( book_id);
   if (!book) throw new Error('Book not found');
 
   const { rating, comment } = body;
-  const existingReview = await reviewService.findReview(userId, bookId);
+  const existingReview = await reviewService.findReview(user_id,  book_id);
 
   let review;
 
   if (existingReview) {
-    await reviewService.updateReview(userId, bookId, { rating, comment });
-    review = await reviewService.findReview(userId, bookId);
+    await reviewService.updateReview(user_id,  book_id, { rating, comment });
+    review = await reviewService.findReview(user_id,  book_id);
   } else {
     review = await reviewService.createReview({
-      userId,
-      bookId,
-      userName: user.username,
-      bookName: book.title,
+      user_id,
+       book_id,
+      user_name: user.user_name,
+      book_name: book.title,
       rating,
-      comment,
+      comment
     });
   }
 
-  const allReviews = await reviewService.getReviewsByBookId(bookId);
+  const allReviews = await reviewService.getReviewsBybookId( book_id);
   const totalRating = allReviews.reduce((sum, r) => sum + r.rating, 0);
   book.averageRating = totalRating / allReviews.length;
   await book.save();
@@ -49,17 +49,17 @@ return {
 };
 }
 
-export const getReviews = async (bookId: string) => {
-  return await reviewService.getReviewsByBookId(bookId);
+export const getReviews = async ( book_id: string) => {
+  return await reviewService.getReviewsBybookId( book_id);
 };
 
-export const deleteReview = async (userId: string, bookId: string) => {
-  const review = await reviewService.findReview(userId, bookId);
+export const deleteReview = async (user_id: string,  book_id: string) => {
+  const review = await reviewService.findReview(user_id,  book_id);
   if (!review) throw new Error('Review not found');
-  await reviewService.deleteReview(userId, bookId);
+  await reviewService.deleteReview(user_id,  book_id);
   return { message: 'Review deleted successfully' };
 };
 
-export const fetchAverageRating = async (bookId: string) => {
-  return await reviewService.getAverageRating(bookId);
+export const fetchAverageRating = async ( book_id: string) => {
+  return await reviewService.getAverageRating( book_id);
 };

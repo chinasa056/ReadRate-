@@ -11,14 +11,14 @@ import sequelize from '../database/sequelize';
 
 class Review extends Model<InferAttributes<Review>, InferCreationAttributes<Review>> {
   declare id: CreationOptional<string>;
-  declare userId: string;
-  declare userName: string;
-  declare bookId: string;
-  declare bookName: string;
+  declare user_id: string;
+  declare user_name: string;
+  declare  book_id: string;
+  declare book_name: string;
   declare rating: number;
   declare comment: string;
-  declare createdAt: CreationOptional<Date>;
-  declare updatedAt: CreationOptional<Date>;
+  declare created_at: CreationOptional<Date>;
+  declare updated_at: CreationOptional<Date>;
 }
 
 Review.init(
@@ -28,7 +28,7 @@ Review.init(
       defaultValue: UUIDV4,
       primaryKey: true,
     },
-    userId: {
+    user_id: {
       type: DataTypes.UUID,
       allowNull: false,
       references: {
@@ -36,11 +36,11 @@ Review.init(
         key: 'id',
       },
     },
-    userName: {
+    user_name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    bookId: {
+     book_id: {
       type: DataTypes.UUID,
       allowNull: false,
       references: {
@@ -48,7 +48,7 @@ Review.init(
         key: 'id',
       },
     },
-    bookName: {
+    book_name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -64,12 +64,12 @@ Review.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    createdAt: {
+    created_at: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,
     },
-    updatedAt: {
+    updated_at: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,
@@ -78,6 +78,7 @@ Review.init(
   {
     sequelize,
     modelName: 'Review',
+    tableName: 'reviews',
     timestamps: true,
     indexes: [
       {

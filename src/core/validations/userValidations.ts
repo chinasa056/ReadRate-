@@ -15,7 +15,7 @@ export const validateUserRegistration = (requestData: {
   return validate(
     requestData,
     object.keys({
-      username: string.trim().min(3).required(),
+      user_name: string.trim().min(3).required(),
       email: string.trim().email().required(),
       // password: string.min(6).required(),
       password: passwordValidator.password().trim().min(8).required(),
@@ -43,7 +43,7 @@ export const validateGetUserProfileData = (requestData: {
   return validate(
     requestData,
     object.keys({
-      username: string.trim().min(3).required(),
+      user_name: string.trim().min(3).required(),
     }),
   );
 };

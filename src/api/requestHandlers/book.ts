@@ -5,11 +5,14 @@ import { getCache, setCache } from '../../core/utils/cache';
 
 export const addBook: RequestHandler = async (req, res, next) => {
     try {
-      const userId = req.params?.userId
+      const userId = req.user?.userId
+      if(!userId) {
+        return res.status(404).json({message: 'user nt found'})
+      };
         const newBook = await bookController.createNewBook(userId,req.body);
         res.status(201).json(responseHandler(newBook, 'Book created successfully'));
     } catch (err) {
-        next(err);
+       return next(err);
     }
 };
 
@@ -85,7 +88,6 @@ export const deleteBook: RequestHandler = async (req, res, next) => {
         next(err);
     }
 };
-
 
 export const getTopRatedBooksHandler: RequestHandler = async (req, res, next) => {
   const cacheKey = 'books:top-rated';

@@ -4,29 +4,29 @@ import { redisClient } from '../utils/redis';
 import * as userService from '../services/user';
 
 export const updateUserProfile = async (
-  userId: string,
+  user_id: string,
   body: Partial<UserAttributes>
 ): Promise<{ [key: string]: any }> => {
-  const user = await userService.findUserById(userId)
+  const user = await userService.findUserById(user_id)
   if (!user) {
     throw new ResourceNotFoundError('User not found', new Error('not found'), {});
   }
 
-  const updatedUser = await userService.updateUserById(userId, body);
+  const updatedUser = await userService.updateUserById(user_id, body);
   return updatedUser;
 };
 
 export const getUserProfile = async (
-  username: string
+  user_name: string
 ): Promise<ProfileResponse> => {
-  const cacheKey = `user:${username}`;
+  const cacheKey = `user:${user_name}`;
   const cachedData = await redisClient.get(cacheKey);
 
   if (cachedData) {
     return JSON.parse(cachedData);
   };
 
-  const user = await userService.findUserByUsername(username);
+  const user = await userService.findUserByUsername(user_name);
   if (!user) {
     throw new ResourceNotFoundError('User not found', null);
   };

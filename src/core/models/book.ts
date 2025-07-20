@@ -1,28 +1,28 @@
-import { DataTypes, Model, Optional,UUIDV4 } from 'sequelize';
+import { DataTypes, Model, Optional, UUIDV4 } from 'sequelize';
 import sequelize from '../database/sequelize';
 import { IBook } from '../interfaces/book';
 
-interface BookCreationAttributes extends Optional<IBook, 'id' | 'averageRating' | 'summary'> {}
+interface BookCreationAttributes extends Optional<IBook, 'id' | 'average_rating' | 'summary'> { }
 
 export class Book extends Model<IBook, BookCreationAttributes> implements IBook {
   public id!: string;
   public title!: string;
   public author!: string;
   public genre!: string;
-  public publishedDate!: Date;
+  public published_date!: Date;
   public summary?: string;
   public averageRating?: number;
 
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+  public readonly created_at!: Date;
+  public readonly updated_at!: Date;
 }
 
 Book.init(
   {
-     id: {
-           type: DataTypes.UUID,
-           defaultValue: UUIDV4,
-           primaryKey: true
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: UUIDV4,
+      primaryKey: true
     },
     title: {
       type: DataTypes.STRING,
@@ -36,7 +36,7 @@ Book.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    publishedDate: {
+    published_date: {
       type: DataTypes.DATE,
       allowNull: false,
     },
@@ -44,14 +44,25 @@ Book.init(
       type: DataTypes.TEXT,
       allowNull: true,
     },
-    averageRating: {
+    average_rating: {
       type: DataTypes.FLOAT,
       defaultValue: 0,
     },
+    created_at: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+    },
+    updated_at: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+    }
   },
   {
     sequelize,
     modelName: 'Book',
+    tableName: 'books',
     timestamps: true,
   }
 );

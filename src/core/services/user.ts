@@ -6,7 +6,7 @@ export const findUserByEmail = async (email: string) => {
 };
 
 export const createUser = async (userData: {
-  username: string;
+  user_name: string;
   email: string;
   password: string;
 }) => {
@@ -21,10 +21,10 @@ export const updateUserById = async (
   return await User.update(body, { where: { id } });
 };
 
-export const findUserByUsername = async (username: string) => {
-  return await User.findOne({ where: { username } });
+export const findUserByUsername = async (user_name: string) => {
+  return await User.findOne({ where: { user_name } });
 };
 
-export const findUserById = async (userId: string) => {
-  return await User.findByPk(userId);
+export const findUserById = async (user_id: string) => {
+  return await User.findByPk(user_id);
 };

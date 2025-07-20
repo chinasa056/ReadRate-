@@ -1,8 +1,8 @@
 import { IReviewAttributes } from '../interfaces/review';
 import Review from '../models/review';
 
-export const findReview = async (userId: string, bookId: string) => {
-  return await Review.findOne({ where: { userId, bookId } });
+export const findReview = async (user_id: string,  book_id: string) => {
+  return await Review.findOne({ where: { user_id,  book_id } });
 };
 
 export const createReview = async (data: IReviewAttributes) => {
@@ -10,26 +10,26 @@ export const createReview = async (data: IReviewAttributes) => {
 };
 
 export const updateReview = async (
-  userId: string,
-  bookId: string,
+  user_id: string,
+   book_id: string,
   data: {
     rating?: number;
     comment?: string;
   }
 ) => {
-  return await Review.update(data, { where: { userId, bookId } });
+  return await Review.update(data, { where: { user_id,  book_id } });
 };
 
-export const getReviewsByBookId = async (bookId: string) => {
-  return await Review.findAll({ where: { bookId } });
+export const getReviewsBybookId = async ( book_id: string) => {
+  return await Review.findAll({ where: {  book_id } });
 };
 
-export const deleteReview = async (userId: string, bookId: string) => {
-  return await Review.destroy({ where: { userId, bookId } });
+export const deleteReview = async (user_id: string,  book_id: string) => {
+  return await Review.destroy({ where: { user_id,  book_id } });
 };
 
-export const getAverageRating = async (bookId: string) => {
-  const reviews = await Review.findAll({ where: { bookId: bookId } });
+export const getAverageRating = async ( book_id: string) => {
+  const reviews = await Review.findAll({ where: {  book_id:  book_id } });
 
   if (!reviews.length) return 0;
 

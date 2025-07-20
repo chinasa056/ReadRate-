@@ -3,10 +3,10 @@ export interface IBook {
   title: string;
   author: string;
   genre: string;
-  publishedDate: Date;
+  published_date: Date;
   summary?: string;
-  averageRating?: number;
-  createdAt?: Date;
-  updatedAt?: Date;
+  average_rating?: number;
+  created_at?: Date;
+  updated_at?: Date;
 }
 

@@ -34,7 +34,7 @@ export const userProfile: RequestHandler = async (
   try {
     console.log('------>>>>>', req.headers['x-dashboard-error-handler']);
     const response = await profileController.getUserProfile(
-      req.params.username,
+      req.params.user_name,
     );
 
     res.json(responseHandler(response, ResponseMessage.UserProfile));

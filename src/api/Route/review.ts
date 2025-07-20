@@ -3,7 +3,7 @@ import * as ReviewHandler from '../requestHandlers/review'
 import { authenticate } from "../middleware/authenticate";
 const router = Router();
 
-router.post('/', authenticate, ReviewHandler.createOrUpdateReview);
+router.post('/:bookId', authenticate, ReviewHandler.createOrUpdateReview);
 
 router.get("/:bookId", ReviewHandler.getReviews);
 

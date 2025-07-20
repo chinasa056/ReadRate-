@@ -25,7 +25,7 @@ export const processUserRegistration = async (
   const hashedPassword = bcrypt.hashSync(body.password, salt);
 
   const newUser = await userService.createUser({
-    username: body.username,
+    user_name: body.user_name,
     email: body.email,
     password: hashedPassword
   });
@@ -54,7 +54,7 @@ export const processUserLogin = async (
     {
       user: {
         userId: user.id,
-        username: user.username,
+        user_name: user.user_name,
         isAdmin: user.is_admin
       },
     },

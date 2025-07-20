@@ -4,24 +4,28 @@ import { logger } from './core/utils/logger';
 import './core/models'; 
 import sequelize from './core/database/sequelize';
 
+const PORT = setting.port || 5000;
+
 const startServer = async (): Promise<void> => {
   try {
+    console.log("STARTING SERVER............")
     await sequelize.authenticate();
     logger.info('Connected to the Database successfully.');
 
-    app.listen(setting.port, () => {
+console.log("Port to be used:", PORT);
+    app.listen(PORT, () => {
+      console.log(`app is listenin to port: ${PORT}`)
       logger.info(`
         ###############################################################
-        ♦️♦️♦️♦️♦️♦️♦️♦️♦️♦️ App listening on port: ${setting.port} ♦️♦️♦️♦️♦️♦️♦️♦️♦️♦️
+        ♦️♦️♦️♦️♦️♦️♦️♦️♦️♦️ App listening on port: ${PORT} ♦️♦️♦️♦️♦️♦️♦️♦️♦️♦️
         ###############################################################
       `);
       logger.info('BullMQ Board is available at http://localhost:1122/admin/queues');
     });
 
   } catch (error) {
-    logger.error('❌ Unable to connect to the database:', error);
-    process.exit(1); // shut down gracefully if DB connection fails
-  }
+ console.error('❌ Unable to connect to the database:', error); // <-- make this change  process.exit(1);
+}
 };
 
 startServer();

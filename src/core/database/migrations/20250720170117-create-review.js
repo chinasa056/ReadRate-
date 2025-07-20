@@ -2,25 +2,25 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Reviews', {
+    await queryInterface.createTable('reviews', {
     id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         primaryKey: true
       },
-      userId: {
+      user_id: {
         type: Sequelize.UUID,
         allowNull: false
       },
-      userName: {
+      user_name: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      bookId: {
+       book_id: {
         type: Sequelize.UUID,
         allowNull: false
       },
-      bookName: {
+      book_name: {
         type: Sequelize.STRING,
         allowNull: false,
       },
@@ -32,12 +32,12 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      createdAt: {
+      created_at: {
         type: Sequelize.DATE,
         allowNull: false,
         defaultValue: Sequelize.NOW,
       },
-      updatedAt: {
+      updated_at: {
         type: Sequelize.DATE,
         allowNull: false,
         defaultValue: Sequelize.NOW,
@@ -45,6 +45,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Reviews');
+    await queryInterface.dropTable('reviews');
   },
 };

@@ -34,7 +34,7 @@ function handleErrors(
     status: false,
     error: 'server_error',
     message: Errors.SERVER_ERROR,
-    data: {},
+    data:err.message || {},
   });
 }
 

@@ -24,7 +24,7 @@ export class User
   >
   implements UserAttributes {
   declare id: CreationOptional<string>;
-  declare username: string;
+  declare user_name: string;
   declare email: string;
   declare password: string;
   declare is_verified: boolean;
@@ -38,7 +38,7 @@ User.init(
       defaultValue: UUIDV4,
       primaryKey: true
     },
-    username: {
+    user_name: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
@@ -66,6 +66,7 @@ User.init(
   {
     sequelize,
     modelName: 'User',
+    tableName: 'users',
     underscored: true,
   }
 );
