@@ -27,10 +27,7 @@ export const processUserRegistration = async (
   const newUser = await userService.createUser({
     username: body.username,
     email: body.email,
-    password: hashedPassword,
-    phone: body.phone,
-    bio: body.bio,
-    image: body.image,
+    password: hashedPassword
   });
 
   logger.info('User registration successful');
@@ -56,8 +53,9 @@ export const processUserLogin = async (
   const token = jwt.sign(
     {
       user: {
-        id: user.id,
+        userId: user.id,
         username: user.username,
+        is_admin: user.is_admin
       },
     },
     setting.secretKey,
@@ -68,9 +66,6 @@ export const processUserLogin = async (
 
   return {
     email: user.email,
-    phone: user.phone,
-    bio: user.bio,
-    image: user.image,
     token,
   };
 };

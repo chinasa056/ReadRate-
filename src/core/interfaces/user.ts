@@ -1,24 +1,18 @@
 export interface UserAttributes {
-  id: number;
+  id?: string;
   username: string;
   email: string;
   password: string;
-  phone: string;
-  bio?: string;
-  image?: string;
   is_verified: boolean;
   is_admin: boolean;
-  reputation: number;
 }
+
 
 
 export interface UserRegistrationRequest {
   username: string;
   email: string;
   password: string;
-  phone: string;
-  bio?: string;
-  image?: string;
 }
 
 export interface UserRegistrationResponse {
@@ -33,16 +27,7 @@ export interface UserLoginRequest {
 
 export interface UserLoginResponse {
   email: string;
-  phone: string;
   token: string;
-  bio?: string;
-  image?: string;
-}
-
-export interface UpdateUserProfile {
-  phone?: string;
-  bio?: string;
-  image?: string;
 }
 
 export interface GetUserProfileData {
@@ -51,9 +36,6 @@ export interface GetUserProfileData {
 
 export interface ProfileResponse {
   email: string;
-  phone: string;
-  bio?: string;
-  image?: string;
 }
 
 export interface LogOutUser {

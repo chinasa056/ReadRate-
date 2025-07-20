@@ -4,10 +4,10 @@ services:
     container_name: mysql_db
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: pass123
+      MYSQL_ROOT_PASSWORD: Acha105#
       MYSQL_DATABASE: book_management
-      MYSQL_USER: user
-      MYSQL_PASSWORD: userpass
+      MYSQL_USER: root
+      MYSQL_PASSWORD: Acha105#
     ports:
       - "3306:3306"
     volumes:
@@ -31,8 +31,8 @@ services:
     environment:
       DB_HOST: mysql
       DB_PORT: 3306
-      DB_USER: user
-      DB_PASSWORD: userpass
+      DB_USER: root
+      DB_PASSWORD: Acha105#
       DB_NAME: book_management
       REDIS_HOST: redis
       REDIS_PORT: 6379

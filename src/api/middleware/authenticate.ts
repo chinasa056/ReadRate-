@@ -1,48 +1,79 @@
-import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
-import AuthorizationError from '../../core/errors/AuthorizationError';
-import { User } from '../../core/models/users';
-import { setting } from '../../core/config/application';
+import { Request, Response, NextFunction } from "express";
+import jwt, { TokenExpiredError } from "jsonwebtoken";
+import { CustomError } from "../../core/errors/CustomError";
+import { ErrorCode } from "../../core/enum/error";
+import { HttpStatus } from "../../core/enum/httpCode";
+import { User } from "../../core/models";
+import { setting } from "../../core/config/application";
+
+export interface AuthenticatedUser {
+  userId: string;
+  username: string;
+  isAdmin: boolean;
+}
+
+declare global {
+  namespace Express {
+    interface Request {
+      user?: AuthenticatedUser;
+    }
+  }
+}
 
 interface JwtPayload {
   user: {
-    id: number;
-    username: string;
+    userId: string;
+    email: string;
+    is_admin: boolean;
   };
 }
 
 export const authenticate = async (
   req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
+  _res: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
-  const token = req.header('Authorization');
+    const token = req.headers.authorization?.split(" ")[1];
 
-  if (!token) {
-    const error = new Error('not_authenticated');
-    const authorizationError = new AuthorizationError(
-      'Authorization denied. No token provided',
-      error
-    );
-    throw authorizationError;
-  }
-    const decodedToken = jwt.verify(
-      token.replace('Bearer ', ''),
-      setting.secretKey,
-    ) as JwtPayload;
-    const user = await User.findOne({ where: { id: decodedToken.user.id } });
-    if (!user) {
-      const error = new Error('not_authenticated');
-      const authorizationError = new AuthorizationError(
-        'Authorization denied. User not found',
-        error
+    if (!token) {
+      throw new CustomError(
+        "Authorization denied. No token provided",
+        ErrorCode.AUTHENTICATION_ERROR,
+        HttpStatus.UNAUTHORIZED
       );
-      throw authorizationError;
     }
-    res.locals.user = user;
+
+    const { user } = jwt.verify(token, setting.jwt.secret) as JwtPayload;
+
+    const authUser = await User.findByPk(user.userId);
+
+    if (!authUser) {
+      throw new CustomError(
+        "Authorization denied. User not found",
+        ErrorCode.NOT_FOUND,
+        HttpStatus.NOT_FOUND
+      );
+    }
+
+    req.user = {
+      userId: authUser.id,
+      username: authUser.username,
+      isAdmin: authUser.is_admin,
+    };
+
     next();
   } catch (error) {
-    next(error);
+    if (error instanceof TokenExpiredError) {
+      next(
+        new CustomError(
+          "Token has expired",
+          ErrorCode.TOKEN_EXPIRED,
+          HttpStatus.UNAUTHORIZED
+        )
+      );
+    } else {
+      next(error);
+    }
   }
 };

@@ -1,5 +1,6 @@
 import * as bookService from '../services/book';
 import { IBook } from '../interfaces/book';
+import { getTopRatedBooks } from '../services/book';
 
 export const createNewBook = async (bookData: IBook) => {
     if (!bookData.title || !bookData.author || !bookData.genre || !bookData.publishedDate) {
@@ -8,9 +9,19 @@ export const createNewBook = async (bookData: IBook) => {
   return await bookService.createBook(bookData);
 };
 
-export const fetchBooks = async () => {
-  return await bookService.getAllBooks();
+interface GetAllBooksOptions {
+  page: number;
+  limit: number;
+  title?: string;
+  author?: string;
+  genre?: string;
+  sortBy?: string;
 };
+
+export const getAllBooksController = async (options: GetAllBooksOptions) => {
+  return await bookService.getAllBooks(options);
+};
+
 
 export const fetchBookById = async (id: string) => {
   const book = await bookService.getBookById(id);
@@ -32,3 +43,6 @@ export const deleteBookById = async (id: string) => {
   return await bookService.deleteBook(id);
 };
 
+export const fetchTopRatedBooks = async () => {
+  return await getTopRatedBooks();
+};

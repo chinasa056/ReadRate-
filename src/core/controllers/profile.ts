@@ -1,12 +1,12 @@
 import ResourceNotFoundError from '../errors/ResourceNotFoundError';
-import { UpdateUserProfile, ProfileResponse } from '../interfaces/user';
+import { ProfileResponse, UserAttributes } from '../interfaces/user';
 import { User } from '../models/users';
 import { redisClient } from '../utils/redis';
 import * as userService from '../services/user';
 
 export const updateUserProfile = async (
   currentUser: User | undefined,
-  body: UpdateUserProfile
+  body: Partial<UserAttributes>
 ): Promise<{ [key: string]: any }> => {
   if (!currentUser) {
     throw new ResourceNotFoundError('User not found', new Error('not found'), {});
@@ -31,11 +31,8 @@ export const getUserProfile = async (
     throw new ResourceNotFoundError('User not found', null);
   }
 
-  const result: ProfileResponse = {
+  const result = {
     email: user.email,
-    phone: user.phone,
-    bio: user.bio,
-    image: user.image,
   };
 
   await redisClient.set(cacheKey, JSON.stringify(result), 'EX', 10800);

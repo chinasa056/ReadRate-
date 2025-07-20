@@ -11,8 +11,9 @@ export interface IReviewAttributes {
 }
 
 export interface ICreateReviewResponse {
+  status: boolean;
   message: string;
-  review: {
+  data: {
     id: string;
     bookId: string;
     bookName: string;

@@ -19,21 +19,16 @@ export class User
         | 'id'
         | 'is_verified'
         | 'is_admin'
-        | 'reputation';
       }
     >
   >
   implements UserAttributes {
-  declare id: CreationOptional<number>;
+  declare id: CreationOptional<string>;
   declare username: string;
   declare email: string;
   declare password: string;
-  declare phone: string;
-  declare bio?: string;
-  declare image?: string;
   declare is_verified: boolean;
   declare is_admin: boolean;
-  declare reputation: number;
 }
 
 User.init(
@@ -57,18 +52,6 @@ User.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    phone: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    bio: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    image: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
     is_verified: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
@@ -78,12 +61,7 @@ User.init(
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false,
-    },
-    reputation: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 0,
-    },
+    }
   },
   {
     sequelize,
