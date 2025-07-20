@@ -2,84 +2,49 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('users', {
-      id: {
+    await queryInterface.createTable('Reviews', {
+    id: {
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
+        primaryKey: true
+      },
+      userId: {
+        type: Sequelize.UUID,
+        allowNull: false
+      },
+      userName: {
+        type: Sequelize.STRING,
         allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
+      },
+      bookId: {
+        type: Sequelize.UUID,
+        allowNull: false
+      },
+      bookName: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      rating: {
         type: Sequelize.INTEGER,
+        allowNull: false
       },
-      id: {
-        type: Sequelize.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-      },
-      username: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true,
-      },
-      email: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true,
-      },
-      password: {
+      comment: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      phone: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      bio: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
-      image: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
-      is_verified: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
-      },
-      is_admin: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
-      },
-      reputation: {
-        type: Sequelize.INTEGER,
-        defaultValue: 0,
-      },
-      is_two_factor_auth_enabled: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
-      },
-      is_two_factor_auth_verified: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false
-      },
-      preferred_two_fa_method: {
-        type: Sequelize.ENUM('email', 'sms'),
-        allowNull: false,
-        defaultValue: 'email'
-      },
-      secret_token: {
-        type: Sequelize.STRING,
-        allowNull: true
-      },
-      created_at: {
-        allowNull: false,
+      createdAt: {
         type: Sequelize.DATE,
-      },
-      updated_at: {
         allowNull: false,
+        defaultValue: Sequelize.NOW,
+      },
+      updatedAt: {
         type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.NOW,
       }
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('users');
+    await queryInterface.dropTable('Reviews');
   },
 };

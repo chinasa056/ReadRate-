@@ -1,18 +1,18 @@
 import ResourceNotFoundError from '../errors/ResourceNotFoundError';
 import { ProfileResponse, UserAttributes } from '../interfaces/user';
-import { User } from '../models/users';
 import { redisClient } from '../utils/redis';
 import * as userService from '../services/user';
 
 export const updateUserProfile = async (
-  currentUser: User | undefined,
+  userId: string,
   body: Partial<UserAttributes>
 ): Promise<{ [key: string]: any }> => {
-  if (!currentUser) {
+  const user = await userService.findUserById(userId)
+  if (!user) {
     throw new ResourceNotFoundError('User not found', new Error('not found'), {});
   }
 
-  const updatedUser = await userService.updateUserById(currentUser.id, body);
+  const updatedUser = await userService.updateUserById(userId, body);
   return updatedUser;
 };
 
@@ -24,12 +24,12 @@ export const getUserProfile = async (
 
   if (cachedData) {
     return JSON.parse(cachedData);
-  }
+  };
 
   const user = await userService.findUserByUsername(username);
   if (!user) {
     throw new ResourceNotFoundError('User not found', null);
-  }
+  };
 
   const result = {
     email: user.email,

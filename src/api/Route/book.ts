@@ -1,20 +1,19 @@
 // src/api/route/book.route.ts
 
 import { Router } from "express";
-import {
-  addBook,
-  getBooks,
-  getBook,
-  updateBook,
-  deleteBook,
-} from "../requestHandlers/book";
+import * as BookHandler from "../requestHandlers/book";
+import { authenticate, authorizeAdmin } from "../middleware/authenticate";
 
 const router = Router();
 
-router.post("/", addBook);
-router.get("/", getBook);
-router.get("/:id", getBooks);
-router.put("/:id", updateBook);
-router.delete("/:id", deleteBook);
+router.post("/", authenticate, authorizeAdmin, BookHandler.addBook);
 
-export default router;
+router.get("/", BookHandler.getAllBooks);
+
+router.get("/:id", BookHandler.getBook);
+
+router.put("/:id", authenticate, authorizeAdmin, BookHandler.updateBook);
+
+router.delete("/:id", authenticate, authorizeAdmin, BookHandler.deleteBook);
+
+export { router as bookRoutes };

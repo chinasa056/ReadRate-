@@ -4,14 +4,16 @@ services:
     container_name: mysql_db
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: Acha105#
+      MYSQL_ROOT_PASSWORD: pass123
       MYSQL_DATABASE: book_management
-      MYSQL_USER: root
-      MYSQL_PASSWORD: Acha105#
+      MYSQL_USER: user
+      MYSQL_PASSWORD: userpass
     ports:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+    networks:
+      - app-network
 
   redis:
     image: redis:alpine
@@ -19,6 +21,8 @@ services:
     restart: always
     ports:
       - "6379:6379"
+    networks:
+      - app-network
 
   app:
     build: .
@@ -29,18 +33,26 @@ services:
       - mysql
       - redis
     environment:
-      DB_HOST: mysql
-      DB_PORT: 3306
-      DB_USER: root
-      DB_PASSWORD: Acha105#
-      DB_NAME: book_management
+      NODE_ENV: development
+      MYSQL_DATABASE: book_management
+      MYSQL_USERNAME: user
+      MYSQL_PASSWORD: userpass
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
       REDIS_HOST: redis
       REDIS_PORT: 6379
-      JWT_SECRET: review
+      JWT_SECRET: your_jwt_secret
       REFRESH_SECRET: your-refresh-secret
     volumes:
       - .:/app
-    command: sh -c "npm run start"
+      - /app/node_modules
+    working_dir: /app
+    command: sh -c "npm install && npm run start:dev"
+    networks:
+      - app-network
 
 volumes:
   mysql_data:
+
+networks:
+  app-network:

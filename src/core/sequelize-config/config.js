@@ -9,18 +9,13 @@ const databaseConfig = {
   dialectOptions: {
     bigNumberStrings: true,
   },
+  port: Number(process.env.MYSQL_PORT) || 3306,
 };
 
 module.exports = {
-  development: {
-    ...databaseConfig,
-  },
-  test: {
-    ...databaseConfig,
-  },
-  staging: {
-    ...databaseConfig,
-  },
+  development: { ...databaseConfig },
+  test: { ...databaseConfig },
+  staging: { ...databaseConfig },
   production: {
     ...databaseConfig,
     logging: false,

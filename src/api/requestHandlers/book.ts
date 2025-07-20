@@ -5,14 +5,15 @@ import { getCache, setCache } from '../../core/utils/cache';
 
 export const addBook: RequestHandler = async (req, res, next) => {
     try {
-        const newBook = await bookController.createNewBook(req.body);
+      const userId = req.params?.userId
+        const newBook = await bookController.createNewBook(userId,req.body);
         res.status(201).json(responseHandler(newBook, 'Book created successfully'));
     } catch (err) {
         next(err);
     }
 };
 
-export const getAllBooksHandler: RequestHandler = async (req, res, next) => {
+export const getAllBooks: RequestHandler = async (req, res, next) => {
   try {
     const {
       page = '1',
@@ -28,7 +29,7 @@ export const getAllBooksHandler: RequestHandler = async (req, res, next) => {
     const cachedData = await getCache(cacheKey);
     if (cachedData) {
       return res.status(200).json({ success: true, cached: true, data: cachedData });
-    }
+    };
 
     const books = await bookController.getAllBooksController({
       page: parseInt(page as string, 10),
@@ -48,14 +49,23 @@ export const getAllBooksHandler: RequestHandler = async (req, res, next) => {
 };
 
 export const getBook: RequestHandler = async (req, res, next) => {
-    try {
-        const bookId = req.params.id;
-        const book = await bookController.fetchBookById(bookId);
-        res.json(responseHandler(book, 'Book retrieved'));
-    } catch (err) {
-        next(err);
+  const bookId = req.params.id;
+  const cacheKey = `books:${bookId}`;
+
+  try {
+    const cached = await getCache(cacheKey);
+    if (cached) {
+      return res.json(responseHandler(cached, 'Book retrieved (cache)'));
     }
+
+    const book = await bookController.fetchBookById(bookId);
+    await setCache(cacheKey, book, 900); // TTL: 15 minutes
+    return res.json(responseHandler(book, 'Book retrieved'));
+  } catch (err) {
+   return next(err);
+  }
 };
+
 export const updateBook: RequestHandler = async (req, res, next) => {
     try {
         const bookId = req.params.id
@@ -76,11 +86,21 @@ export const deleteBook: RequestHandler = async (req, res, next) => {
     }
 };
 
-export const getTopRatedBooksHandler:RequestHandler = async (req, res, next) => {
+
+export const getTopRatedBooksHandler: RequestHandler = async (req, res, next) => {
+  const cacheKey = 'books:top-rated';
+
   try {
+    const cached = await getCache(cacheKey);
+    if (cached) {
+      return res.status(200).json(responseHandler(cached, 'Books fetched (cache)'));
+    }
+
     const books = await bookController.fetchTopRatedBooks();
-    return res.status(200).json(responseHandler(books, 'books fetched successfully'))
+    await setCache(cacheKey, books, 600);
+    return res.status(200).json(responseHandler(books, 'Books fetched'));
   } catch (error) {
-    return next(error);
+   return next(error);
   }
 };
+

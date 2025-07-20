@@ -55,7 +55,7 @@ export const processUserLogin = async (
       user: {
         userId: user.id,
         username: user.username,
-        is_admin: user.is_admin
+        isAdmin: user.is_admin
       },
     },
     setting.secretKey,

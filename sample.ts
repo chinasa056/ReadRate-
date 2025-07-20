@@ -13,3 +13,7 @@
 // 👤 Users (Public profile - 10–30 minutes):
 // Endpoint	Key	TTL (sec)
 // GET /users/:id	user:<id>	1800
+
+// docker system prune -a --volumes
+// docker-compose down -v
+// docker-compose up --build

@@ -1,8 +1,21 @@
 import * as bookService from '../services/book';
 import { IBook } from '../interfaces/book';
 import { getTopRatedBooks } from '../services/book';
+import { findUserById } from '../services/user';
+import { CustomError } from '../errors/CustomError';
+import { ErrorCode } from '../enum/error';
+import { HttpStatus } from '../enum/httpCode';
 
-export const createNewBook = async (bookData: IBook) => {
+export const createNewBook = async (userId: string, bookData: IBook) => {
+  const user = await findUserById(userId)
+   if (!user) {
+    throw new CustomError(
+      "Manager not found",
+      ErrorCode.NOT_FOUND,
+      HttpStatus.NOT_FOUND
+    );
+  };
+
     if (!bookData.title || !bookData.author || !bookData.genre || !bookData.publishedDate) {
         throw new Error('Missing required book fields');
     };

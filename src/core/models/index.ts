@@ -1,9 +1,7 @@
-import { Book } from "./book";
-import Review from "./review";
-import { User } from "./users";
-Review
+import {User} from './users';
+import {Book} from './book';
+import Review from './review'; // last
 
-// Define associations
 
 // A User can write many reviews
 User.hasMany(Review, { foreignKey: 'userId', as: 'reviews' });

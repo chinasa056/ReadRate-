@@ -1,8 +1,8 @@
 import { RequestHandler } from 'express';
 import { responseHandler } from '../../core/helpers/utilities';
 import * as profileController from '../../core/controllers/profile';
-import { validateUserProfileUpdate } from '../../core/validations/userValidations';
 import { ResponseMessage } from '../../core/constant/responses';
+import ResourceNotFoundError from '../../core/errors/ResourceNotFoundError';
 
 export const updateUser: RequestHandler = async (
   req,
@@ -10,10 +10,14 @@ export const updateUser: RequestHandler = async (
   next,
 ): Promise<void> => {
   try {
-    const validateUpdateData = validateUserProfileUpdate(req.body);
+    const userId = req.user?.userId;
+   if (!userId) {
+       throw new ResourceNotFoundError('User not found', new Error('not found'), {});
+     };
+
     const response = await profileController.updateUserProfile(
-      res.locals.user,
-      validateUpdateData,
+      userId,
+      req.body,
     );
 
     res.json(responseHandler(response, ResponseMessage.UpdateUser));

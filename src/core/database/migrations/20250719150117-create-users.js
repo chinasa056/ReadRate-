@@ -2,10 +2,10 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('users', {
+    await queryInterface.createTable('Users', {
       id: {
         type: Sequelize.UUID,
-        defaultValue: UUIDV4,
+        defaultValue: Sequelize.UUIDV4,
         primaryKey: true
       },
       username: {
@@ -21,14 +21,6 @@ module.exports = {
       password: {
         type: Sequelize.STRING,
         allowNull: false,
-      },
-      phone: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      image: {
-        type: Sequelize.STRING,
-        allowNull: true,
       },
       is_verified: {
         type: Sequelize.BOOLEAN,
@@ -51,6 +43,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('users');
+    await queryInterface.dropTable('Users');
   },
 };

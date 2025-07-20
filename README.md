@@ -4,20 +4,20 @@
 
 A scalable and well-structured Book Review RESTful API built with Node.js, Express.js, TypeScript, MySQL, Sequelize ORM, Redis for caching, and Docker.
 
-## 🚀 Features
+## Features
 
-- ✅ User authentication with JWT (access & refresh tokens)
-- 📚 Full CRUD operations for Books and Reviews
-- ⭐ Average rating calculation for books
-- 🔍 Filtering, sorting, and pagination for books
-- 🔥 Redis caching for performance optimization
-- 🧪 Unit and integration testing
-- 🐳 Docker support for easy setup
-- 📄 Swagger documentation (optional/coming soon)
+- User authentication with JWT (access & refresh tokens)
+- Full CRUD operations for Books and Reviews
+- Average rating calculation for books
+- Filtering, sorting, and pagination for books
+- Redis caching for performance optimization
+- Unit and integration testing
+- Docker support for easy setup
+- Swagger documentation (optional/coming soon)
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Backend:** Node.js, Express.js, TypeScript
 - **Database:** MySQL with Sequelize ORM
@@ -29,7 +29,7 @@ A scalable and well-structured Book Review RESTful API built with Node.js, Expre
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 
@@ -57,7 +57,7 @@ src/
 
 ---
 
-## ⚙️ Setup Instructions
+## Setup Instructions
 
 ### 🔧 Prerequisites
 
@@ -67,7 +67,7 @@ src/
 
 ---
 
-### 🐳 Using Docker (Recommended)
+### Using Docker (Recommended)
 
 1. **Clone the repository**
 
@@ -106,7 +106,7 @@ This will start:
 
 ---
 
-### 🧪 Run Tests
+### Run Tests
 
 ```bash
 npm run test
