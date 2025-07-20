@@ -1,6 +1,7 @@
 import { RequestHandler } from 'express';
 import * as bookController from '../../core/controllers/book';
 import { responseHandler } from '../../core/helpers/utilities';
+import { getCache, setCache } from '../../core/utils/cache';
 
 export const addBook: RequestHandler = async (req, res, next) => {
     try {
@@ -12,29 +13,38 @@ export const addBook: RequestHandler = async (req, res, next) => {
 };
 
 export const getAllBooksHandler: RequestHandler = async (req, res, next) => {
-    try {
-        const {
-            page = '1',
-            limit = '10',
-            title,
-            author,
-            genre,
-            sortBy,
-        } = req.query;
+  try {
+    const {
+      page = '1',
+      limit = '10',
+      title = '',
+      author = '',
+      genre = '',
+      sortBy = '',
+    } = req.query;
 
-        const books = await bookController.getAllBooksController({
-            page: parseInt(page as string, 10),
-            limit: parseInt(limit as string, 10),
-            title: title as string,
-            author: author as string,
-            genre: genre as string,
-            sortBy: sortBy as string,
-        });
+    const cacheKey = `books:all:page=${page}:limit=${limit}:title=${title}:author=${author}:genre=${genre}:sort=${sortBy}`;
 
-        res.status(200).json({ success: true, data: books });
-    } catch (error) {
-        next(error);
+    const cachedData = await getCache(cacheKey);
+    if (cachedData) {
+      return res.status(200).json({ success: true, cached: true, data: cachedData });
     }
+
+    const books = await bookController.getAllBooksController({
+      page: parseInt(page as string, 10),
+      limit: parseInt(limit as string, 10),
+      title: title as string,
+      author: author as string,
+      genre: genre as string,
+      sortBy: sortBy as string,
+    });
+
+    await setCache(cacheKey, books, 300);
+
+    res.status(200).json({ success: true, cached: false, data: books });
+  } catch (error) {
+   return next(error);
+  }
 };
 
 export const getBook: RequestHandler = async (req, res, next) => {
