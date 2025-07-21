@@ -22,10 +22,9 @@ const sequelize = new Sequelize(
     logging: config.logging ?? env !== 'production',
   }
 );
-
-// Retry logic
+ 
 const MAX_RETRIES = 10;
-const RETRY_DELAY = 5000; // 5 seconds
+const RETRY_DELAY = 5000;
 
 async function connectWithRetry(retries = MAX_RETRIES): Promise<void> {
   try {

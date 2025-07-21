@@ -1,6 +1,5 @@
 import * as bookService from '../services/book';
 import { IBook } from '../interfaces/book';
-import { getTopRatedBooks } from '../services/book';
 import { findUserById } from '../services/user';
 import { CustomError } from '../errors/CustomError';
 import { ErrorCode } from '../enum/error';
@@ -35,7 +34,6 @@ export const getAllBooksController = async (options: GetAllBooksOptions) => {
   return await bookService.getAllBooks(options);
 };
 
-
 export const fetchBookById = async (id: string) => {
   const book = await bookService.getBookById(id);
   if (!book) throw new Error('Book not found');
@@ -57,5 +55,5 @@ export const deleteBookById = async (id: string) => {
 };
 
 export const fetchTopRatedBooks = async () => {
-  return await getTopRatedBooks();
+  return await bookService.getTopRatedBooks();
 };

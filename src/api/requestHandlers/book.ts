@@ -73,7 +73,7 @@ export const updateBook: RequestHandler = async (req, res, next) => {
     try {
         const bookId = req.params.id
         const updatedBook = await bookController.updateBookById(bookId, req.body);
-        res.json(responseHandler(updatedBook, 'Book updated successfully'));
+        res.status(200).json(responseHandler(updatedBook, 'Book updated successfully'));
     } catch (err) {
         next(err);
     }
@@ -82,8 +82,8 @@ export const updateBook: RequestHandler = async (req, res, next) => {
 export const deleteBook: RequestHandler = async (req, res, next) => {
     try {
         const id = req.params.id
-        const result = bookController.deleteBookById(id);
-        res.status(200).json(result);
+        await bookController.deleteBookById(id);
+        res.status(200).json({message: "Book deleted successfully"});
     } catch (err) {
         next(err);
     }

@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: readrate-api
+    runtime: docker
+    plan: free
+    repo: https://github.com/chinasa056/ReadRate-
+    branch: main
+    dockerfilePath: ./Dockerfile
+    autoDeploy: true
+    envVarGroups:
+      - name: readrate-env-group

@@ -68,14 +68,19 @@ export const getTopRatedBooks = async () => {
   });
 
   const booksWithAvgRating = books.map((book: any) => {
-    const ratings = book.reviews.map((r: any) => r.rating);
+    const highRatedReviews = book.reviews.filter((r: any) => r.rating >= 4.5);
+    const ratings = highRatedReviews.map((r: any) => r.rating);
+    
     const averageRating = ratings.length
-  ? ratings.reduce((a: number, b: number) => a + b, 0) / ratings.length
-  : 0;
+      ? ratings.reduce((a: number, b: number) => a + b, 0) / ratings.length
+      : 0;
+
     return { ...book.toJSON(), averageRating };
   });
 
   return booksWithAvgRating
+    .filter((book) => book.averageRating >= 4.5)
     .sort((a, b) => b.averageRating - a.averageRating)
     .slice(0, 10);
 };
+

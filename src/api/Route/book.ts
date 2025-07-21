@@ -12,8 +12,10 @@ router.get("/", BookHandler.getAllBooks);
 
 router.get("/:id", BookHandler.getBook);
 
-router.put("/:id", authenticate, authorizeAdmin, BookHandler.updateBook);
+router.patch("/:id", authenticate, authorizeAdmin, BookHandler.updateBook);
 
 router.delete("/:id", authenticate, authorizeAdmin, BookHandler.deleteBook);
+
+router.get("/top-rated", BookHandler.getTopRatedBooksHandler)
 
 export { router as bookRoutes };

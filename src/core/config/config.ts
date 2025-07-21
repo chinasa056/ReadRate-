@@ -13,10 +13,10 @@ export interface DBConfig {
 }
 
 const baseConfig: DBConfig = {
-  database: process.env.MYSQL_DATABASE || 'book_management',
-  username: process.env.MYSQL_USERNAME || 'root',
-  password: process.env.MYSQL_PASSWORD || 'password',
-  host: process.env.MYSQL_HOST || 'mysql', // Docker-compatible host
+  database: process.env.DATABASE_NAME!,
+  username: process.env.DATABASE_USERNAME!,
+  password: process.env.DATABASE_PASSWORD!,
+  host: process.env.DATABASE_HOST!,
   dialect: 'mysql',
   dialectOptions: {
     bigNumberStrings: true,
