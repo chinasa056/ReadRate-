@@ -8,11 +8,9 @@ const PORT = setting.port || 5000;
 
 const startServer = async (): Promise<void> => {
   try {
-    console.log("STARTING SERVER............")
     await sequelize.authenticate();
     logger.info('Connected to the Database successfully.');
 
-console.log("Port to be used:", PORT);
     app.listen(PORT, () => {
       console.log(`app is listenin to port: ${PORT}`)
       logger.info(`
