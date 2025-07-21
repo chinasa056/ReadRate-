@@ -1,11 +1,41 @@
 services:
   - type: web
-    name: readrate-api
+    name: ReadRate-API
     runtime: docker
-    plan: free
     repo: https://github.com/chinasa056/ReadRate-
     branch: main
-    dockerfilePath: ./Dockerfile
+    plan: free
     autoDeploy: true
-    envVarGroups:
-      - name: readrate-env-group
+    dockerfilePath: ./Dockerfile
+    buildCommand: ""
+    startCommand: npm run start
+    envVars:
+      - key: NODE_ENV
+        value: development
+
+      - key: DATABASE_NAME
+        value: ${DATABASE_NAME}
+      - key: DATABASE_USERNAME
+        value: ${DATABASE_USERNAME}
+      - key: DATABASE_PASSWORD
+        value: ${DATABASE_PASSWORD}
+      - key: DATABASE_HOST
+        value: ${DATABASE_HOST}
+      - key: DATABASE_DIALECT
+        value: mysql
+
+      - key: REDIS_CLIENT_USERNAME
+        value: ${REDIS_CLIENT_USERNAME}
+      - key: REDIS_CLIENT_PASSWORD
+        value: ${REDIS_CLIENT_PASSWORD}
+      - key: REDIS_CLIENT_HOST
+        value: ${REDIS_CLIENT_HOST}
+      - key: REDIS_CLIENT_PORT
+        value: ${REDIS_CLIENT_PORT}
+
+      - key: JWT_SECRET
+        value: ${JWT_SECRET}
+      - key: REFRESH_SECRET
+        value: ${REFRESH_SECRET}
+
+    healthCheckPath: /api/health
