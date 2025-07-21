@@ -1,21 +1,21 @@
-# Dockerfile
+# Use official Node.js Alpine image
 FROM node:20-alpine
 
-# Fix DNS issue and update packages
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories \
-  && apk update && apk upgrade --no-cache
-
-# Set working directory
+# Set working directory inside container
 WORKDIR /app
 
-# Copy package.json and install dependencies
+# Copy dependency files and install
 COPY package*.json ./
 RUN npm install
 
-# Copy source files
+# Copy the rest of the app code
 COPY . .
 
-# Expose port and start app
-EXPOSE 5000
-CMD ["npm", "run", "start"]
+# Build TypeScript -> JavaScript
+RUN npm run build
 
+# Expose the port your app runs on
+EXPOSE 5000
+
+# Start the app
+CMD ["npm", "run", "start"]
