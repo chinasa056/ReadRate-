@@ -26,3 +26,16 @@ export const loginUser: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+
+export const refreshToken: RequestHandler = async (req, res, next) => {
+  try {
+    const userId = req.user?.userId
+    if(!userId){
+      return res.status(404).json({message: 'User not found'});
+    };
+    const user = await userController.refreshToken({ userId, refreshToken: req.body.refresh_token });
+    res.json(responseHandler(user, 'User access token refreshed successfully'));
+  } catch (error) {
+   return next(error);
+  }
+};

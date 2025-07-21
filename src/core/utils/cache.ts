@@ -12,3 +12,7 @@ export const getCache = async (key: string) => {
 export const deleteCache = async (key: string) => {
   await redisClient.del(key);
 };
+
+export const cacheExpiry = async (key: string, ttl: number) => {
+  await redisClient.expire(key, ttl);
+}

@@ -7,8 +7,6 @@ export interface UserAttributes {
   is_admin: boolean;
 }
 
-
-
 export interface UserRegistrationRequest {
   user_name: string;
   email: string;
@@ -27,7 +25,8 @@ export interface UserLoginRequest {
 
 export interface UserLoginResponse {
   email: string;
-  token: string;
+  access_token: string;
+  refresh_token: string;
 }
 
 export interface GetUserProfileData {

@@ -9,7 +9,7 @@ export const updateUserProfile = async (
 ): Promise<{ [key: string]: any }> => {
   const user = await userService.findUserById(user_id)
   if (!user) {
-    throw new ResourceNotFoundError('User not found', new Error('not found'), {});
+    throw new ResourceNotFoundError('User not found', null);
   }
 
   const updatedUser = await userService.updateUserById(user_id, body);
