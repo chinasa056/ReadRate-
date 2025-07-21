@@ -19,7 +19,7 @@ __tests__
 Dockerfile
 docker-compose.yml
 npm-debug.log
-tsconfig.json
+# tsconfig.json
 test
 coverage
 .vscode
