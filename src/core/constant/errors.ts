@@ -1,11 +1,12 @@
 export enum Errors {
-  NOT_AUTHENTICATED = 'This request is not authenticated',
-  UNAUTHORIZED = "'Unauthorized access. Please log in to continue'",
-  BAD_REQUEST = 'Invalid data provided for the request',
-  FORBIDDEN = 'Forbidden. You do not have permission to access this resource',
-  REQUEST_VALIDATION = 'There was an issue with your request. Please check the provided information and try again',
-  RESOURCE_NOT_FOUND = 'The resource you are looking for could not be found',
-  SERVICE_UNAVAILABLE = 'Service unavailable. Please try again later',
-  INVALID_AUTHORIZATION_TOKEN = 'Authorization token is invalid',
-  SERVER_ERROR = 'Internal server error. Please try again later or contact support if the issue persists'
-};
+  NOT_AUTHENTICATED = 'REQUEST NOT AUTHENTICATED',
+  NOT_AUTHORIZED = 'REQUEST NOT AUTHORIZED',
+  BAD_REQUEST = 'INVALID REQUEST DATA',
+  CONFLICT = 'REQUEST COULD NOT BE COMPLETED DUE TO CONFLICT',
+  NOT_IMPLEMENTED = 'FUNCTIONALITY NOT SUPPORTED',
+  SERVER_ERROR = 'INTERNAL SERVER ERROR',
+  VALIDATION = 'DATA PROVIDED IS INVALID',
+  RESOURCE_NOT_FOUND = 'RESOURCE NOT FOUND',
+  INVALID_AUTHORIZATION_TOKEN = 'INVALID AUTHORIZATION TOKEN',
+  SERVICE_UNAVAILABLE = 'SERVICE UNAVAILABLE',
+}
