@@ -19,7 +19,7 @@ const sequelize = new Sequelize(
     define: {
       underscored: true,
     },
-    logging: config.logging ?? env !== 'production',
+    logging: false,
   }
 );
  
