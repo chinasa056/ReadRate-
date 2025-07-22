@@ -1,8 +1,7 @@
-// src/api/route/book.route.ts
-
 import { Router } from "express";
-import * as BookHandler from "../requestHandlers/book";
-import { authenticate, authorizeAdmin } from "../middleware/authenticate";
+import * as RequestHandler from "../requestHandlers/book";
+import { authenticate } from "../middleware/authenticate";
+import { authorizeAdmin } from "../middleware/authorization";
 
 const router = Router();
 
@@ -54,7 +53,7 @@ const router = Router();
  *       401:
  *         description: Unauthorized
  */
-router.post("/", authenticate, authorizeAdmin, BookHandler.addBook);
+router.post("/", authenticate, authorizeAdmin, RequestHandler.addBook);
 
 
 /**
@@ -97,7 +96,7 @@ router.post("/", authenticate, authorizeAdmin, BookHandler.addBook);
  *       500:
  *         description: Server error
  */
-router.get("/", BookHandler.getAllBooks);
+router.get("/", RequestHandler.getAllBooks);
 
 /**
  * @swagger
@@ -131,7 +130,7 @@ router.get("/", BookHandler.getAllBooks);
  *             example:
  *               message: "Book not found"
  */
-router.get("/:id", BookHandler.getBook);
+router.get("/:id", RequestHandler.getBook);
 
 /**
  * @swagger
@@ -172,7 +171,7 @@ router.get("/:id", BookHandler.getBook);
  *       404:
  *         description: Book not found
  */
-router.patch("/:id", authenticate, authorizeAdmin, BookHandler.updateBook);
+router.patch("/:id", authenticate, authorizeAdmin, RequestHandler.updateBook);
 
 /**
  * @swagger
@@ -198,7 +197,7 @@ router.patch("/:id", authenticate, authorizeAdmin, BookHandler.updateBook);
  *       404:
  *         description: Book not found
  */
-router.delete("/:id", authenticate, authorizeAdmin, BookHandler.deleteBook);
+router.delete("/:id", authenticate, authorizeAdmin, RequestHandler.deleteBook);
 
 /**
  * @swagger
@@ -221,6 +220,6 @@ router.delete("/:id", authenticate, authorizeAdmin, BookHandler.deleteBook);
  *       500:
  *         description: Server error
  */
-router.get("/top-rated", BookHandler.getTopRatedBooksHandler)
+router.get("/top-rated", RequestHandler.getTopRatedBooksHandler)
 
 export { router as bookRoutes };

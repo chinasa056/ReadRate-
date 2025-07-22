@@ -1,33 +1,22 @@
 import Redis from 'ioredis';
 
+const REDIS_HOST = process.env.REDIS_HOST || 'localhost'; 
+const REDIS_PORT = process.env.REDIS_PORT ? parseInt(process.env.REDIS_PORT, 10) : 6379;
+const REDIS_USERNAME = process.env.REDIS_USERNAME; 
+const REDIS_PASSWORD = process.env.REDIS_PASSWORD; 
+
 export const redisClient = new Redis({
-  host: process.env.REDIS_CLIENT_HOST,
-  port: process.env.REDIS_CLIENT_PORT ? parseInt(process.env.REDIS_CLIENT_PORT, 10) : 6379, 
-  username: process.env.REDIS_CLIENT_USERNAME,
-  password: process.env.REDIS_CLIENT_PASSWORD,
+  host: REDIS_HOST,
+  port: REDIS_PORT,
+  username: REDIS_USERNAME,
+  password: REDIS_PASSWORD,
 });
 
 redisClient.on('connect', () => {
-  console.log('Connected to Redis');
+  console.log(`Connected to Redis at ${REDIS_HOST}:${REDIS_PORT}`);
 });
 
 redisClient.on('error', (err: any) => {
-  console.error('Redis Client Error: ', err);
+  console.error('Unable to connect to Redis: ', err);
 });
 
-
-//  export const redisClient = new Redis({
-//   host: process.env.REDIS_CLIENT_HOST,
-//   port: process.env.REDIS_CLIENT_PORT,
-//   username: process.env.REDIS_CLIENT_USERNAME,
-//   password: process.env.REDIS_CLIENT_PASSWORD
-// //   tls: {} // Redis Cloud requires TLS
-// });
-
-// redisClient.on('connect', () => {
-//   console.log('Connected to Redis Cloud');
-// });
-
-// redisClient.on('error', (err) => {
-//   console.error('Redis error:', err);
-// });

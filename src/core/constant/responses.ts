@@ -5,7 +5,14 @@ export enum ResponseMessage {
   UpdateUser = 'User updated successfully',
   UserProfile = 'User profile',
   CreateBook = 'Book created successfully',
-  UpdateAnswer = 'Book updated successfully',
-  GetBook = 'List of Books to this question',
-  DeleteBook = 'Book deleted successfully'
+  UpdateBook = 'Book updated successfully',
+  GetBook = 'List of Books retrieved successfully',
+  DeleteBook = 'Book deleted successfully',
+  GetTopRatedBooks = 'Top rated books retrieved successfully',
+  CreateReview = 'Review created successfully',
+  UpdateReview = 'Review updated successfully',
+  DeleteReview = 'Review deleted successfully',
+  GetReviews = 'Reviews retrieved successfully',
+  GetUserReviews = 'User reviews retrieved successfully',
+  GetAverageRating = 'Average rating fetched successfully',
 }

@@ -1,20 +1,11 @@
 import { Book } from '../models/book';
-import { IBook } from '../interfaces/book';
+import { GetAllBooksOptions, IBook } from '../interfaces/book';
 import { Op } from 'sequelize';
 import { Review } from '../models';
 
 export const createBook = async (bookData: IBook): Promise<Book> => {
   return await Book.create(bookData);
 };
-
-interface GetAllBooksOptions {
-  page: number;
-  limit: number;
-  title?: string;
-  author?: string;
-  genre?: string;
-  sortBy?: string;
-}
 
 export const getAllBooks = async ({
   page,

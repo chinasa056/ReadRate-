@@ -13,8 +13,8 @@ export const routes = (): Router => {
 
   router.use(`${appVersion}/users`, userRoutes);
   router.use(`${appVersion}/users/profile`, profileRoutes);
-  router.use(`${appVersion}/books`,bookRoutes )
-  router.use(`${appVersion}/reviews`,reviewRoutes )
+  router.use(`${appVersion}/books`, bookRoutes )
+  router.use(`${appVersion}/reviews`, reviewRoutes )
 
   return router;
 };

@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import { setting } from './application';
 dotenv.config();
 
 export interface DBConfig {
@@ -13,15 +14,15 @@ export interface DBConfig {
 }
 
 const baseConfig: DBConfig = {
-  database: process.env.DATABASE_NAME!,
-  username: process.env.DATABASE_USERNAME!,
-  password: process.env.DATABASE_PASSWORD!,
-  host: process.env.DATABASE_HOST!,
+  database: setting.mysql.database!,
+  username: setting.mysql.user!,
+  password: setting.mysql.password!,
+  host: setting.mysql.host!,
   dialect: 'mysql',
   dialectOptions: {
     bigNumberStrings: true,
   },
-  port: Number(process.env.MYSQL_PORT) || 3306,
+  port: setting.mysql.port || 3306,
 };
 
 export const databaseConfig: Record<string, DBConfig> = {

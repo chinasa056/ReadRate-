@@ -8,5 +8,14 @@ export interface IBook {
   average_rating?: number;
   created_at?: Date;
   updated_at?: Date;
-}
+};
+
+ export interface GetAllBooksOptions {
+  page: number;
+  limit: number;
+  title?: string;
+  author?: string;
+  genre?: string;
+  sortBy?: string;
+};
 

@@ -3,6 +3,7 @@ import { responseHandler } from '../../core/helpers/utilities';
 import * as profileController from '../../core/controllers/profile';
 import { ResponseMessage } from '../../core/constant/responses';
 import ResourceNotFoundError from '../../core/errors/ResourceNotFoundError';
+import { logger } from '../../core/utils/logger';
 
 export const updateUser: RequestHandler = async (
   req,
@@ -32,7 +33,7 @@ export const userProfile: RequestHandler = async (
   next,
 ): Promise<void> => {
   try {
-    console.log('------>>>>>', req.headers['x-dashboard-error-handler']);
+    logger.info('------>>>>>', req.headers['x-dashboard-error-handler']);
     const response = await profileController.getUserProfile(
       req.params.user_name,
     );

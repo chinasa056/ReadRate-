@@ -2,6 +2,8 @@ import * as reviewService from '../services/review';
 import { getBookById } from '../services/book';
 import { ICreateReviewResponse, IReviewAttributes } from '../interfaces/review';
 import { findUserById } from '../services/user';
+import ResourceNotFoundError from '../errors/ResourceNotFoundError';
+// import { ResponseMessage } from '../constant/responses';
 
 export const createOrUpdateReview = async (
   user_id: string,
@@ -12,7 +14,7 @@ export const createOrUpdateReview = async (
   if (!user) throw new Error('User not found');
 
   const book = await getBookById( book_id);
-  if (!book) throw new Error('Book not found');
+  if (!book) throw new ResourceNotFoundError('Book not found', null);
 
   const { rating, comment } = body;
   const existingReview = await reviewService.findReview(user_id,  book_id);

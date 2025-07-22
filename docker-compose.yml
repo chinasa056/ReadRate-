@@ -5,9 +5,10 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: pass123
-      MYSQL_DATABASE: book_management
-      MYSQL_USER: user
-      MYSQL_PASSWORD: userpass
+      MYSQL_DATABASE: book_management 
+      MYSQL_USER: user             
+      MYSQL_PASSWORD: userpass     
+      
     ports:
       - "3306:3306"
     volumes:
@@ -34,11 +35,11 @@ services:
       - redis
     environment:
       NODE_ENV: development
-      MYSQL_DATABASE: book_management
-      MYSQL_USERNAME: user
-      MYSQL_PASSWORD: userpass
-      MYSQL_HOST: mysql
-      MYSQL_PORT: 3306
+      DATABASE_NAME: book_management
+      DATABASE_USERNAME: user
+      DATABASE_PASSWORD: userpass
+      DATABASE_HOST: mysql
+      DATABASE_PORT: 3306
       REDIS_HOST: redis
       REDIS_PORT: 6379
       JWT_SECRET: your_jwt_secret
@@ -56,35 +57,3 @@ volumes:
 
 networks:
   app-network:
-
-# services:
-#   mysql:
-#     image: mysql:8
-#     container_name: mysql_db
-#     restart: unless-stopped
-#     environment:
-#       MYSQL_ROOT_PASSWORD: pass123
-#       MYSQL_DATABASE: book_management
-#       MYSQL_USER: user
-#       MYSQL_PASSWORD: userpass
-#     ports:
-#       - "3306:3306"
-#     volumes:
-#       - mysql_data:/var/lib/mysql
-#     networks:
-#       - app-network
-
-#   redis:
-#     image: redis:alpine
-#     container_name: redis_server
-#     restart: unless-stopped
-#     ports:
-#       - "6379:6379"
-#     networks:
-#       - app-network
-
-# volumes:
-#   mysql_data:
-
-# networks:
-#   app-network:

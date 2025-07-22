@@ -5,7 +5,7 @@ import morgan from 'morgan';
 import { Errors } from './core/constant/errors';
 import { routes } from './api/Route';
 import { handleErrors } from './api/middleware/handleError';
-import { swaggerSpec, swaggerUi } from './core/docs/swaggerOptins';
+import { swaggerSpec, swaggerUi } from './core/swaggerconfg/swaggerOptins';
 
 swaggerSpec
 const app = express();

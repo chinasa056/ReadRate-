@@ -2,6 +2,7 @@ import { RequestHandler } from 'express';
 import * as bookController from '../../core/controllers/book';
 import { responseHandler } from '../../core/helpers/utilities';
 import { getCache, setCache } from '../../core/utils/cache';
+import { ResponseMessage } from '../../core/constant/responses';
 
 export const addBook: RequestHandler = async (req, res, next) => {
     try {
@@ -10,7 +11,7 @@ export const addBook: RequestHandler = async (req, res, next) => {
         return res.status(404).json({message: 'user nt found'})
       };
         const newBook = await bookController.createNewBook(userId,req.body);
-        res.status(201).json(responseHandler(newBook, 'Book created successfully'));
+        res.status(201).json(responseHandler(newBook, ResponseMessage.CreateBook));
     } catch (err) {
        return next(err);
     }
@@ -45,7 +46,7 @@ export const getAllBooks: RequestHandler = async (req, res, next) => {
 
     await setCache(cacheKey, books, 300);
 
-    res.status(200).json({ success: true, cached: false, data: books });
+    res.status(200).json(responseHandler(books, ResponseMessage.GetBook));
   } catch (error) {
    return next(error);
   }
@@ -59,34 +60,34 @@ export const getBook: RequestHandler = async (req, res, next) => {
     const cached = await getCache(cacheKey);
     if (cached) {
       return res.json(responseHandler(cached, 'Book retrieved (cache)'));
-    }
+    };
 
     const book = await bookController.fetchBookById(bookId);
-    await setCache(cacheKey, book, 900); // TTL: 15 minutes
-    return res.json(responseHandler(book, 'Book retrieved'));
+    await setCache(cacheKey, book, 900);
+    return res.json(responseHandler(book, ResponseMessage.GetBook));
   } catch (err) {
    return next(err);
-  }
+  };
 };
 
 export const updateBook: RequestHandler = async (req, res, next) => {
     try {
         const bookId = req.params.id
         const updatedBook = await bookController.updateBookById(bookId, req.body);
-        res.status(200).json(responseHandler(updatedBook, 'Book updated successfully'));
+        res.status(200).json(responseHandler(updatedBook, ResponseMessage.UpdateBook));
     } catch (err) {
         next(err);
-    }
+    };
 };
 
 export const deleteBook: RequestHandler = async (req, res, next) => {
     try {
         const id = req.params.id
         await bookController.deleteBookById(id);
-        res.status(200).json({message: "Book deleted successfully"});
+        res.status(200).json({ message: ResponseMessage.DeleteBook });
     } catch (err) {
         next(err);
-    }
+    };
 };
 
 export const getTopRatedBooksHandler: RequestHandler = async (req, res, next) => {
@@ -96,13 +97,13 @@ export const getTopRatedBooksHandler: RequestHandler = async (req, res, next) =>
     const cached = await getCache(cacheKey);
     if (cached) {
       return res.status(200).json(responseHandler(cached, 'Books fetched (cache)'));
-    }
+    };
 
     const books = await bookController.fetchTopRatedBooks();
     await setCache(cacheKey, books, 600);
-    return res.status(200).json(responseHandler(books, 'Books fetched'));
+    return res.status(200).json(responseHandler(books, ResponseMessage.GetTopRatedBooks));
   } catch (error) {
    return next(error);
-  }
+  };
 };
 

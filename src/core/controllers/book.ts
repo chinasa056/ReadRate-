@@ -1,5 +1,5 @@
 import * as bookService from '../services/book';
-import { IBook } from '../interfaces/book';
+import { GetAllBooksOptions, IBook } from '../interfaces/book';
 import { findUserById } from '../services/user';
 import { CustomError } from '../errors/CustomError';
 import { ErrorCode } from '../enum/error';
@@ -19,15 +19,6 @@ export const createNewBook = async (user_id: string, bookData: IBook) => {
         throw new Error('Missing required book fields');
     };
   return await bookService.createBook(bookData);
-};
-
-interface GetAllBooksOptions {
-  page: number;
-  limit: number;
-  title?: string;
-  author?: string;
-  genre?: string;
-  sortBy?: string;
 };
 
 export const getAllBooksController = async (options: GetAllBooksOptions) => {

@@ -11,31 +11,47 @@ import {
 } from '../interfaces/user';
 
 import { cacheRefreshToken, generateAccessJwtToken, generateRefreshJwtToken, isRefreshTokenValid } from '../helpers/auth';
-import { createUser, findUserByEmail, findUserById } from '../services/user';
-
+import { createUser, findUserByEmail, findUserById, findUserByUsername } from '../services/user';
+import { UniqueConstraintError, ValidationError } from 'sequelize'; // 
 
 export const processUserRegistration = async (
   body: UserRegistrationRequest,
 ): Promise<UserRegistrationResponse> => {
-  const userExist = await findUserByEmail(body.email);
-  if (userExist) {
-    throw new Error('User with this email already exists');
+  try { 
+    const userExist = await findUserByEmail(body.email);
+    if (userExist) {
+      throw new AuthorizationError('User with this email already exists', null); 
+    };
+
+    const usernameExist = await findUserByUsername(body.user_name);
+    if (usernameExist) {
+        throw new AuthorizationError('User with this username already exists', null);
+    };
+
+    const salt = bcrypt.genSaltSync(10); 
+    const hashedPassword = bcrypt.hashSync(body.password, salt); 
+
+    const newUser = await createUser({
+      user_name: body.user_name,
+      email: body.email,
+      password: hashedPassword
+    });
+
+    logger.info('User registration successful');
+    return {
+      message: 'User registration successful',
+      user: newUser,
+    };
+  } catch (error) {
+    if (error instanceof UniqueConstraintError) {
+      const field = error.errors[0]?.path || 'unknown field';
+      throw new AuthorizationError(`User with this ${field} already exists.`, null);
+    }
+    if (error instanceof ValidationError) {
+        throw new BadRequestError(`Validation failed: ${error.message}`, error);
+    };
+    throw error;
   }
-
-  const salt = bcrypt.genSaltSync(10);
-  const hashedPassword = bcrypt.hashSync(body.password, salt);
-
-  const newUser = await createUser({
-    user_name: body.user_name,
-    email: body.email,
-    password: hashedPassword
-  });
-
-  logger.info('User registration successful');
-  return {
-    message: 'User registration successful',
-    user: newUser,
-  };
 };
 
 export const processUserLogin = async (
@@ -44,12 +60,12 @@ export const processUserLogin = async (
   const user = await findUserByEmail(body.email);
   if (!user) {
     throw new AuthorizationError('Email or password incorrect', null);
-  }
+  };
 
   const isPasswordValid = await bcrypt.compare(body.password, user.password);
   if (!isPasswordValid) {
-    throw new AuthorizationError('Wrong password', null);
-  }
+    throw new AuthorizationError('Email or password incorrect', null);
+  };
 
   const accessToken = generateAccessJwtToken({ userId: user.id, user_name: user.user_name, isAdmin: user.is_admin });
   const refreshToken = generateRefreshJwtToken({ id: user.id });
@@ -71,11 +87,11 @@ export const refreshToken = async (data: {
   const user = await findUserById(data.userId);
   if (!user) {
     throw new ResourceNotFoundError('User not found', null);
-  }
+  };
   const isTokenValid = await isRefreshTokenValid({ userId: data.userId, refreshToken: data.refreshToken });
   if (!isTokenValid) {
     throw new BadRequestError('Invalid refresh token', null);
-  }
+  };
 
   const refreshToken = generateRefreshJwtToken({ id: user.id });
   const accessToken = generateAccessJwtToken({ userId: user.id, user_name: user.user_name, isAdmin: user.is_admin });
@@ -83,5 +99,5 @@ export const refreshToken = async (data: {
 
   const { id, user_name, email } = user;
   return { id, email, user_name, accessToken, refreshToken };
-}
+};
 

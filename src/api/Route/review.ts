@@ -1,5 +1,5 @@
 import { Router } from "express";
-import * as ReviewHandler from '../requestHandlers/review'
+import * as RequestHandler from '../requestHandlers/review'
 import { authenticate } from "../middleware/authenticate";
 const router = Router();
 
@@ -64,7 +64,7 @@ const router = Router();
  *       500:
  *         description: Server error
  */
-router.post('/:bookId', authenticate, ReviewHandler.createOrUpdateReview);
+router.post('/:bookId', authenticate, RequestHandler.createOrUpdateReview);
 
 /**
  * @swagger
@@ -108,7 +108,7 @@ router.post('/:bookId', authenticate, ReviewHandler.createOrUpdateReview);
  *       500:
  *         description: Server error
  */
-router.get("/:bookId", ReviewHandler.getReviews);
+router.get("/:bookId", RequestHandler.getReviews);
 
 /**
  * @swagger
@@ -143,7 +143,7 @@ router.get("/:bookId", ReviewHandler.getReviews);
  *       500:
  *         description: Server error
  */
-router.get("/rating/:bookId", ReviewHandler.getAverageRating);
+router.get("/rating/:bookId", RequestHandler.getAverageRating);
 
 /**
  * @swagger
@@ -179,6 +179,6 @@ router.get("/rating/:bookId", ReviewHandler.getAverageRating);
  *       500:
  *         description: Server error
  */
-router.delete("/:bookId", authenticate, ReviewHandler.deleteReview)
+router.delete("/:bookId", authenticate, RequestHandler.deleteReview)
 
 export {router as reviewRoutes};
