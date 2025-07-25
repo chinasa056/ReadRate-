@@ -3,12 +3,36 @@ import { setting } from '../config/application';
 import BadRequestError from '../errors/BadRequestError';
 import { cacheExpiry, deleteCache, getCache, setCache } from '../utils/cache';
 
+// export const generateAccessJwtToken = (data: { userId: string; user_name: string; isAdmin: boolean }): string => {
+//   const token = jwt.sign(
+//     {
+//       userId: data.userId,
+//       email: data.user_name,
+//       roleId: data.isAdmin
+//     },
+//     setting.jwt.secret,
+//     { expiresIn: setting.jwt.access_token_expires_in } as jwt.SignOptions
+//   );
+//   return token;
+// };
+
+// export const generateRefreshJwtToken = (data: { id: string }): string => {
+//   const token = jwt.sign(
+//     {
+//       id: data.id
+//     },
+//     setting.jwt.refresh_token_secret_key,
+//     { expiresIn: setting.jwt.refresh_token_expires_in } as jwt.SignOptions
+//   );
+//   return token;
+// };
+
 export const generateAccessJwtToken = (data: { userId: string; user_name: string; isAdmin: boolean }): string => {
   const token = jwt.sign(
     {
-      id: data.userId,
-      email: data.user_name,
-      roleId: data.isAdmin
+      userId: data.userId, 
+      user_name: data.user_name, 
+      isAdmin: data.isAdmin 
     },
     setting.jwt.secret,
     { expiresIn: setting.jwt.access_token_expires_in } as jwt.SignOptions
@@ -26,6 +50,7 @@ export const generateRefreshJwtToken = (data: { id: string }): string => {
   );
   return token;
 };
+
 
 export const verifyJwtAccessToken = (token: string): { id: string; email: string; isAdmin: boolean } => {
   try {

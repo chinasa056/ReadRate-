@@ -1,9 +1,9 @@
+
 import { Request, Response, NextFunction } from "express";
 import jwt, { TokenExpiredError } from "jsonwebtoken";
 import { CustomError } from "../../core/errors/CustomError";
 import { ErrorCode } from "../../core/enum/error";
 import { HttpStatus } from "../../core/enum/httpCode";
-// import { User } from "../../core/models";
 import { setting } from "../../core/config/application";
 import { findUserById } from "../../core/services/user";
 
@@ -21,13 +21,14 @@ declare global {
   }
 }
 
-interface JwtPayload {
-  user: {
-    userId: string;
-    email: string;
-    is_admin: boolean;
-  };
+interface DecodedAccessTokenPayload { 
+  userId: string;     
+  user_name: string;
+  isAdmin: boolean;   
+  iat?: number;
+  exp?: number;
 }
+
 
 export const authenticate = async (
   req: Request,
@@ -45,9 +46,13 @@ export const authenticate = async (
       );
     }
 
-    const { user } = jwt.verify(token, setting.jwt.secret) as JwtPayload;
+    // FIX 2: Correctly decode the token directly into DecodedAccessTokenPayload
+    // DO NOT destructure 'user' here, as your token is flat
+    const decodedToken = jwt.verify(token, setting.jwt.secret) as DecodedAccessTokenPayload;
 
-    const authUser = await findUserById(user.userId);
+    // We get userId directly from the decoded token
+    // FIX 3: Use decodedToken.userId, not user.userId
+    const authUser = await findUserById(decodedToken.userId);
 
     if (!authUser) {
       throw new CustomError(
@@ -57,10 +62,11 @@ export const authenticate = async (
       );
     }
 
+    // FIX 4: Ensure the properties you assign to req.user match AuthenticatedUser
     req.user = {
-      userId: authUser.id,
+      userId: authUser.id, // Your database user model likely has 'id'
       user_name: authUser.user_name,
-      isAdmin: authUser.is_admin,
+      isAdmin: authUser.is_admin, // Your database user model likely has 'is_admin'
     };
 
     next();
@@ -74,8 +80,7 @@ export const authenticate = async (
         )
       );
     } else {
-      next(error);
+      next(error); // Pass other errors to your error handling middleware
     }
   }
 };
-
