@@ -171,7 +171,7 @@ router.get("/:id", RequestHandler.getBook);
  *       404:
  *         description: Book not found
  */
-router.patch("/:id", authenticate, authorizeAdmin, RequestHandler.updateBook);
+router.patch("/:id", authenticate, RequestHandler.updateBook);
 
 /**
  * @swagger
@@ -197,7 +197,7 @@ router.patch("/:id", authenticate, authorizeAdmin, RequestHandler.updateBook);
  *       404:
  *         description: Book not found
  */
-router.delete("/:id", authenticate, authorizeAdmin, RequestHandler.deleteBook);
+router.delete("/:id", authenticate, RequestHandler.deleteBook);
 
 /**
  * @swagger
