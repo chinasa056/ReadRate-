@@ -8,7 +8,7 @@ export const addBook: RequestHandler = async (req, res, next) => {
     try {
       const userId = req.user?.userId
       if(!userId) {
-        return res.status(404).json({message: 'user nt found'})
+        return res.status(404).json({message: 'user not found'})
       };
         const newBook = await bookController.createNewBook(userId,req.body);
         res.status(201).json(responseHandler(newBook, ResponseMessage.CreateBook));

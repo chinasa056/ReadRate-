@@ -1,4 +1,4 @@
-import { AuthenticatedUser } from "../../core/interfaces/auth"; // or wherever AuthenticatedUser is defined
+import { AuthenticatedUser } from "../../api/middleware/authenticate"; 
 
 declare global {
   namespace Express {

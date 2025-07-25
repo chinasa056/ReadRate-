@@ -1,59 +1,84 @@
+# services:
+#   mysql:
+#     image: mysql:8
+#     container_name: mysql_db
+#     restart: always
+#     environment:
+#       MYSQL_ROOT_PASSWORD: pass123
+#       MYSQL_DATABASE: book_management 
+#       MYSQL_USER: user             
+#       MYSQL_PASSWORD: userpass     
+      
+#     ports:
+#       - "3306:3306"
+#     volumes:
+#       - mysql_data:/var/lib/mysql
+#     networks:
+#       - app-network
+
+#   redis:
+#     image: redis:alpine
+#     container_name: redis_server
+#     restart: always
+#     ports:
+#       - "6379:6379"
+#     networks:
+#       - app-network
+
+#   app:
+#     build: .
+#     container_name: book-review-api
+#     ports:
+#       - "5000:5000"
+#     depends_on:
+#       - mysql
+#       - redis
+#     environment:
+#       NODE_ENV: development
+#       DATABASE_NAME: book_management
+#       DATABASE_USERNAME: user
+#       DATABASE_PASSWORD: userpass
+#       DATABASE_HOST: mysql
+#       DATABASE_PORT: 3306
+#       REDIS_HOST: redis
+#       REDIS_PORT: 6379
+#       JWT_SECRET: your_jwt_secret
+#       REFRESH_SECRET: your-refresh-secret
+#     volumes:
+#       - .:/app
+#       - /app/node_modules
+#     working_dir: /app
+#     command: sh -c "npm install && npm run start:dev"
+#     networks:
+#       - app-network
+
+# volumes:
+#   mysql_data:
+
+# networks:
+#   app-network:
+
 services:
   mysql:
-    image: mysql:8
-    container_name: mysql_db
-    restart: always
+    image: mysql:8.0
+    container_name: mysql_container
+    restart: unless-stopped
+    ports:
+      - '3307:3306'
     environment:
       MYSQL_ROOT_PASSWORD: pass123
-      MYSQL_DATABASE: book_management 
-      MYSQL_USER: user             
-      MYSQL_PASSWORD: userpass     
-      
-    ports:
-      - "3306:3306"
+      MYSQL_DATABASE: book_management
+      MYSQL_USER: user
+      MYSQL_PASSWORD: userpass
     volumes:
       - mysql_data:/var/lib/mysql
-    networks:
-      - app-network
 
   redis:
     image: redis:alpine
-    container_name: redis_server
-    restart: always
+    container_name: redis_container
+    restart: unless-stopped
     ports:
-      - "6379:6379"
-    networks:
-      - app-network
-
-  app:
-    build: .
-    container_name: book-review-api
-    ports:
-      - "5000:5000"
-    depends_on:
-      - mysql
-      - redis
-    environment:
-      NODE_ENV: development
-      DATABASE_NAME: book_management
-      DATABASE_USERNAME: user
-      DATABASE_PASSWORD: userpass
-      DATABASE_HOST: mysql
-      DATABASE_PORT: 3306
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      JWT_SECRET: your_jwt_secret
-      REFRESH_SECRET: your-refresh-secret
-    volumes:
-      - .:/app
-      - /app/node_modules
-    working_dir: /app
-    command: sh -c "npm install && npm run start:dev"
-    networks:
-      - app-network
+      - '6379:6379'
 
 volumes:
   mysql_data:
-
-networks:
-  app-network:

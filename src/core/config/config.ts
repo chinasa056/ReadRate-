@@ -14,15 +14,15 @@ export interface DBConfig {
 }
 
 const baseConfig: DBConfig = {
-  database: setting.mysql.database!,
-  username: setting.mysql.user!,
-  password: setting.mysql.password!,
-  host: setting.mysql.host!,
+  database: setting.mysql.database || 'book_management',
+  username: setting.mysql.user || 'user',
+  password: setting.mysql.password || 'userpass',
+  host: setting.mysql.host || 'localhost',
   dialect: 'mysql',
   dialectOptions: {
     bigNumberStrings: true,
   },
-  port: setting.mysql.port || 3306,
+  port: setting.mysql.port || 3307,
 };
 
 export const databaseConfig: Record<string, DBConfig> = {
