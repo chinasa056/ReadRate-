@@ -53,7 +53,7 @@ const router = Router();
  *       401:
  *         description: Unauthorized
  */
-router.post("/", authenticate, authorizeAdmin, RequestHandler.addBook);
+router.post("/", authenticate, RequestHandler.addBook);
 
 
 /**

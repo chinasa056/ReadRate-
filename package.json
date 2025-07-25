@@ -10,8 +10,10 @@
     "lint": "eslint",
     "migrate": "sequelize db:migrate",
     "db:create": "sequelize db:create",
-    "test": "jest --verbose",
-    "build": "tsc"
+    "build": "tsc",
+    "test": "jest --detectOpenHandles --verbose",
+
+    "test:watch": "cross-env NODE_ENV=test jest --watch --detectOpenHandles"
   },
   "keywords": [],
   "author": "",
@@ -50,18 +52,18 @@
     "safe-json-stringify": "^1.2.0",
     "sequelize": "^6.35.2",
     "sequelize-cli": "^6.6.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0",
     "ts-jest": "^29.1.2",
     "ts-node-dev": "^2.0.0",
-    "winston": "^3.10.0",
-    "swagger-ui-express": "^5.0.0",
-    "swagger-jsdoc": "^6.2.8"
+    "winston": "^3.10.0"
   },
   "devDependencies": {
     "@types/jest": "^29.5.11",
     "@types/nodemailer": "^6.4.14",
     "@types/passport": "^1.0.17",
     "@types/safe-json-stringify": "^1.1.2",
-    "@types/swagger-ui-express": "^4.1.8" 
-}
-
+    "@types/swagger-ui-express": "^4.1.8",
+    "cross-env": "^7.0.3"
+  }
 }

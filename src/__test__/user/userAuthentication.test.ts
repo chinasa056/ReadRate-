@@ -268,3 +268,17 @@ describe('User Authentication', () => {
     });
   });
 });
+
+// Important: Clean up all connections after these tests
+afterAll(async () => {
+  // Using dynamic imports to avoid issues with module initialization order
+  const { closeRedis } = await import('../../core/utils/redis');
+  const { default: sequelize } = await import('../../core/database/sequelize');
+  
+  try {
+    await closeRedis();
+    await sequelize.close();
+  } catch (error) {
+    logger.error('Error in test cleanup:', error);
+  }
+});

@@ -3,6 +3,7 @@ dotenv.config();
 
 import { Sequelize } from 'sequelize';
 import { databaseConfig } from '../config/config';
+import { logger } from '../utils/logger';
 
 const env = process.env.NODE_ENV || 'development';
 const config = databaseConfig[env];
@@ -19,30 +20,40 @@ const sequelize = new Sequelize(
     define: {
       underscored: true,
     },
-    logging: false,
+    logging: config.logging ?? env !== 'production',
   }
 );
  
 const MAX_RETRIES = 10;
 const RETRY_DELAY = 5000;
 
-async function connectWithRetry(retries = MAX_RETRIES): Promise<void> {
+// Exported for testing purposes
+export async function connectWithRetry(retries = MAX_RETRIES): Promise<void> {
   try {
     await sequelize.authenticate();
-    console.log('Database connection established successfully.');
+    logger.info('Database connection established successfully.');
   } catch (error) {
-    console.error(`Unable to connect to the database. Retries left: ${retries}`);
-    if (retries > 0) {
-      setTimeout(() => {
-        connectWithRetry(retries - 1);
-      }, RETRY_DELAY);
-    } else {
-      console.error('All retry attempts failed. Exiting...');
+    logger.error(`Unable to connect to the database. Retries left: ${retries}`);
+    
+    if (retries > 0 && process.env.NODE_ENV !== 'test') {
+      // In non-test environments, retry the connection
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(connectWithRetry(retries - 1));
+        }, RETRY_DELAY);
+      });
+    } else if (process.env.NODE_ENV !== 'test') {
+      // Only exit in non-test environments
+      logger.error('All database connection retry attempts failed');
       process.exit(1);
     }
   }
 }
 
-connectWithRetry();
+if (process.env.NODE_ENV !== 'test') {
+  connectWithRetry().catch(err => {
+    logger.error('Failed to connect to database:', err);
+  });
+}
 
 export default sequelize;
