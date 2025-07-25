@@ -20,24 +20,38 @@ export const addBook: RequestHandler = async (req, res, next) => {
 export const getAllBooks: RequestHandler = async (req, res, next) => {
   try {
     const {
-      page = '1',
-      limit = '10',
+      page: rawPage,    
+      limit: rawLimit, 
       title = '',
       author = '',
       genre = '',
       sortBy = '',
     } = req.query;
 
-    const cacheKey = `books:all:page=${page}:limit=${limit}:title=${title}:author=${author}:genre=${genre}:sort=${sortBy}`;
+    let page = parseInt(rawPage as string, 10);
+    if (isNaN(page) || page < 1) { 
+      page = 1; 
+    }
 
+    let limit = parseInt(rawLimit as string, 10);
+    if (isNaN(limit) || limit < 1) { 
+
+    }
+
+    if (limit > 20) { 
+        limit = 20;
+    }
+
+    const cacheKey = `books:all:page=${page}:limit=${limit}:title=${title}:author=${author}:genre=${genre}:sort=${sortBy}`;
+    
     const cachedData = await getCache(cacheKey);
     if (cachedData) {
       return res.status(200).json({ success: true, cached: true, data: cachedData });
-    };
+    }
 
     const books = await bookController.getAllBooksController({
-      page: parseInt(page as string, 10),
-      limit: parseInt(limit as string, 10),
+      page: page, 
+      limit: limit, 
       title: title as string,
       author: author as string,
       genre: genre as string,
@@ -48,7 +62,7 @@ export const getAllBooks: RequestHandler = async (req, res, next) => {
 
     res.status(200).json(responseHandler(books, ResponseMessage.GetBook));
   } catch (error) {
-   return next(error);
+    return next(error);
   }
 };
 
