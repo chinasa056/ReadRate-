@@ -1,7 +1,7 @@
 import { Router } from "express";
 import * as RequestHandler from "../requestHandlers/book";
 import { authenticate } from "../middleware/authenticate";
-import { authorizeAdmin } from "../middleware/authorization";
+// import { authorizeAdmin } from "../middleware/authorization";
 
 const router = Router();
 
